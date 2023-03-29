@@ -8,3 +8,7 @@ body {
     height: 100vh;
     background: #4B8753;
 }
+
+img {
+    width: 100px;
+}
