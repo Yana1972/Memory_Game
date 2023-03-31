@@ -6,19 +6,28 @@ let firstCard, secondCard;
 function flipCard() {
     this.classList.add('flip');
 
-    //first time player click card
+    //First time player click card
     if (!hasFlippedCard) {
         hasFlippedCard = true;
         firstCard = this;
     } else {
 
-    //second time player click card
+    //Second time player click card
         hasFlippedCard = false;
         secondCard = this;
 
-    //do cards match?
-    console.log(firstCard.dataset.framework);
-    console.log(secondCard.dataset.framework);
+    //Do cards match?
+    if (firstCard.dataset.image === secondCard.dataset.image) {
+    //It is a match!
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+    }else{
+    //Not a match!
+    setTimeout(() => {
+    firstCard.classList.remove('flip');
+    secondCard.classList.remove('flip');
+    }, 1500);
+    }
     }
 }
 
