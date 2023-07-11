@@ -15,13 +15,14 @@ body {
     height: 640px;
     margin: auto; 
     display: flex;
-    flex-wrap: wrap;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
     perspective: 1000px;
 }
 
 .memory-card {
-    width:calc(25% - 10px);
-    height:calc(33.333% - 10px);
+    width: 100%;
+    height: 100%;
     position: relative;
     margin: 5px;
     transform: scale(1);
