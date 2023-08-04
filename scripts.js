@@ -2,22 +2,20 @@ let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 
+
 addEventListener("DOMContentLoaded", (event) => {
     (function loadCard() {
+        const [row, column] = [5, 5]
+        const memoryGame = document.getElementsByClassName('memory-game')[0];
+        memoryGame.style.cssText += `display: grid; grid-template-columns: repeat(${column}, 1fr); grid-template-rows: repeat(${row}, 1fr);`
 
-
-
-        const [row, column] = [3,4]
-        const memoryGame = document.getElementsByClassName('memory-game') [0];
-        memoryGame.style.cssText += `display: grid; grid-template-columns: repeat(${column}, 1fr); grid-template-rows: repeat (${row}, 1fr);`
-
-        Array.from(Array(row+column)).forEach((_, index) => {
+        Array.from(Array(row*column)).forEach((_, index) => {
             const imageId = Math.ceil((index + 1) /2)
             console.log('imageId', imageId)
-            memoryGame.innerHTML = memoryGame.innerHTML + `<div class="memory-card" data-image=${imageId}> <img class="front-face" 
-            src="images/${imageId}.svg" alt=" image ${imageId}" /> <img class="back-face" src="images/back.svg" alt="back image" /> </div>`
+            memoryGame.innerHTML = memoryGame.innerHTML + `<div class="memory-card" data-image=${imageId}> <img class="front-face" src="images/${imageId}.svg" alt="image ${imageId}" /> <img class="back-face" src="images/back.svg" alt="back image" /> </div>`
         })
 
+            //Shuffle cards
         const cards = document.querySelectorAll('.memory-card');
         cards.forEach(card => {
             card.addEventListener('click', flipCard)
@@ -26,64 +24,55 @@ addEventListener("DOMContentLoaded", (event) => {
         });
 
 
- function flipCard() {
-    if (lockBoard) return;
-    if ( this === firstCard) return;
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
 
-    this.classList.add('flip');
+            this.classList.add('flip');
 
-    //First time player click card
-    if (!hasFlippedCard) {
-        hasFlippedCard = true;
-        firstCard = this;
-      return;
-    }
+            //First time player clicks card
+            if (!hasFlippedCard) {
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
 
-    //Second time player click card
-        secondCard = this;
+            //Second time player clicks card
+            secondCard = this;
 
-        checkForMatch();
- }
+            checkForMatch();
+        }
 
- function checkForMatch(){
-    //Do cards match?
-    let isMatch = firstCard.dataset.image === secondCard.dataset.image;
-    
-    isMatch ? disableCards() : unflipCards();
- }
+        function checkForMatch() {
+            //Do cards match?
+            let isMatch = firstCard.dataset.image === secondCard.dataset.image;
 
- function disableCards(){
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
+            isMatch ? disableCards() : unflipCards();
+        }
 
-    resetBoard();
- }
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
 
- function unflipCards(){
-    lockBoard = true;
+            resetBoard();
+        }
 
-setTimeout(() => {
-    firstCard.classList.remove('flip');
-    secondCard.classList.remove('flip');
-    
-    resetBoard();
-    }, 1200);
- }
+        function unflipCards() {
+            lockBoard = true;
 
- function resetBoard() {
-    [hasFlippedCard, lockBoard] = [false, false];
-    [firstCard, secondCard] = [null, null];
- }
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList.remove('flip');
 
- (function shuffle(){
-    cards.forEach ( card => {
-        let randomPos = Math.floor(Math.random() * 12);
-        card.style.order = randomPos;
-    });
- })();
+                resetBoard();
+            }, 1200);
+        }
 
- cards.forEach(card => card.addEventListener('click', flipCard));
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
 
-})
+    })()
 
-})
+});
